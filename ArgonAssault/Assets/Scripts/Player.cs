@@ -35,6 +35,17 @@ public class Player : MonoBehaviour
         ProcessRotation();
     }
 
+    void OnCollisionEnter(Collision collision)
+	{
+		print("Player collided with somthing");
+	}
+
+    void OnTriggerEnter(Collider other)
+	{
+		print("Player triggered something");
+	}
+   
+
     private void ProcessRotation()
     {
         // pitch due to position and control throw
@@ -58,7 +69,7 @@ public class Player : MonoBehaviour
         // give value between -1 and 1
         yThrow = CrossPlatformInputManager.GetAxis("Vertical");
         float yOffset = yThrow * Time.deltaTime * ySpeed;
-        float clampedY = Mathf.Clamp(transform.localPosition.y + yOffset, yMin, yMax);
+		float clampedY = Mathf.Clamp(transform.localPosition.y + yOffset, yMin, yMax);
         transform.localPosition = new Vector3(transform.localPosition.x, clampedY, transform.localPosition.z);
     }
 }
