@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("General")]
     [Tooltip("In ms^-1")][SerializeField] float xSpeed = 10f;
     [Tooltip("In ms^-1")] [SerializeField] float ySpeed = 10f;
-    [Tooltip("In m")] [SerializeField] float maxXFromCenter = -4.5f;
+    [Tooltip("In m")] [SerializeField] float maxXFromCenter = 4.5f;
     [SerializeField] GameObject[] guns;
     
     [Header("Screen-position Based")]
@@ -87,7 +87,8 @@ public class PlayerController : MonoBehaviour
         // give value between -1 and 1
         xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
         float xOffset = xThrow * Time.deltaTime * xSpeed;
-        float clampedX = Mathf.Clamp(transform.localPosition.x + xOffset, maxXFromCenter, -maxXFromCenter);
+        float newPosition = transform.localPosition.x + xOffset;
+        float clampedX = Mathf.Clamp(transform.localPosition.x + xOffset, -maxXFromCenter, maxXFromCenter);
         transform.localPosition = new Vector3(clampedX, transform.localPosition.y, transform.localPosition.z);
     }
 
