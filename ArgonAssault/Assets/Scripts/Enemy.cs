@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject deathFX;
     [SerializeField] Transform parent;
     [SerializeField] int scorePerHit = 12;
+    [SerializeField] int hits = 3;
+    [SerializeField] GameObject hitFX;
     ScoreBoard scoreBoard;
 
     // Start is called before the first frame update
@@ -25,11 +27,28 @@ public class Enemy : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        print("Particles collided with enemy " + gameObject.name);
+        print("Enemy hit");
+        CreateHitEffect();
+        scoreBoard.ScoreHit(scorePerHit);
+        hits--;
+        if (hits < 1)
+        {
+            KillEnemy();
+        }
+        
+    }
+
+    private void CreateHitEffect()
+    {
+        GameObject fx = Instantiate(hitFX, transform.position, Quaternion.identity);
+        fx.transform.parent = parent;
+    }
+
+    private void KillEnemy()
+    {
         GameObject fx = Instantiate(deathFX, transform.position, Quaternion.identity);
         // set the parent of the transform to the parent provided
         fx.transform.parent = parent;
         Destroy(this.gameObject);
-        scoreBoard.ScoreHit(scorePerHit);
     }
 }
