@@ -4,47 +4,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    
+    [Header("General")]
     [Tooltip("In ms^-1")][SerializeField] float xSpeed = 10f;
     [Tooltip("In ms^-1")] [SerializeField] float ySpeed = 10f;
-    [Tooltip("In m")] [SerializeField] float maxXFromCenter = -4f;
-    [Tooltip("In m")] [SerializeField] float yMax = 2.7f;
-    [Tooltip("In m")] [SerializeField] float yMin = -2.3f;
+    [Tooltip("In m")] [SerializeField] float maxXFromCenter = -4.5f;
+    
+    [Header("Screen-position Based")]
+    [Tooltip("In m")] [SerializeField] float yMax = 3.2f;
+    [Tooltip("In m")] [SerializeField] float yMin = -3.2f;
+	[SerializeField] float positionYawFactor = 8f;
+	[SerializeField] float positionPitchFactor = -5f;
 
-    [SerializeField] float positionPitchFactor = -5f;
+    [Header("Control-throw Based")]
     [SerializeField] float controlPitchFactor = -20f;
-    [SerializeField] float positionYawFactor = 8f;
     [SerializeField] float controlRollFactor = -20f;
 
     float xThrow;
     float yThrow;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	bool controlsDisabled = false;
 
     // Update is called once per frame
     void Update()
     {
-        UpdateXPos();
-        UpdateYPos();
-        ProcessRotation();
+        if (!controlsDisabled)
+		{
+			UpdateXPos();
+			UpdateYPos();
+			ProcessRotation();
+		}
+        
     }
 
-    void OnCollisionEnter(Collision collision)
+    // called by string reference
+    private void DisableControls()
 	{
-		print("Player collided with somthing");
+		controlsDisabled = true;
 	}
-
-    void OnTriggerEnter(Collider other)
-	{
-		print("Player triggered something");
-	}
-   
 
     private void ProcessRotation()
     {
